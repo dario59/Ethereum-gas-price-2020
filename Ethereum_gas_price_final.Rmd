@@ -1,0 +1,82 @@
+---
+title: "Ethereum gas price 2020"
+author: "Dario Saturni"
+date: "30/4/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+In this document we'll answer the question "How much the gas price influenced the final price for Ethereum in 2020? When was the best time to enter the market?". Past can't predict future but be aware of recent trends can give an helping hand in understanding the current situation. You'll need the packages below to execute the code contained in this analysis.
+
+```{r}
+install.packages("tidyverse")
+library(tidyverse)
+```
+
+## Data source
+
+The dataset I've used for this analysis is from bigquery and it's part of its collection of public data. Bear in mind every price/value you'll see it's in Wei and the timezone is UTC.
+
+First thing first the SQL chunk. I recommend to work directly in bigquery as the dataset is really large and I don't see the point to do otherwise. I've created a temp table using the query you'll see below. This temp table contains all the relevant information already divided by the year we're interested in, ready to use for further query. I didn't use nested query and instead opted for this solution because I wanted to be able to return to my results easily to query for other things in future as I plan to work a little bit more on this topic.
+
+```{mysql eval=FALSE}
+WITH ethereum_2020 AS 
+(SELECT EXTRACT(YEAR from block_timestamp) AS year,
+EXTRACT(MONTH FROM block_timestamp) AS month,
+EXTRACT(HOUR FROM block_timestamp) AS hour,
+block_timestamp AS complete_time,
+nonce,
+value,
+gas
+gas_price,
+receipt_cumulative_gas_used,
+receipt_gas_used,
+receipt_status,
+FROM `bigquery-public-data.crypto_ethereum.transactions`
+WHERE EXTRACT(YEAR FROM block_timestamp) = 2020)
+```
+
+With a few more lines I've queried data about the transaction and the gas price. I ended up with a bunch of .csv in which there are data about the number of transaction per month, the cumulative gas price ordered for various variable such as month, week etc. and the busiest time to operate in the market. I'll let you do the work as I won't give you the query I've used to create these .csv but rest assured, it's very simple.
+
+```{r cars}
+gas_price_hour <- read.csv("gas_price_hour_2020.csv")
+gas_price_month <- read.csv("gas_price_per_month_2020.csv")
+number_of_transaction <- read.csv("number_of_transaction_per_month_2020.csv")
+```
+
+## Showcase the data
+
+It's time to take a look at our finding, from a graphical standpoint to be as clear as possible. 
+
+```{r, echo=FALSE}
+ggplot(gas_price_hour, aes(x=hour, y=gas_price_cumulative,  size=20, colour.position="none")) +
+  geom_jitter(color="purple") +
+  labs(title="Gas price divided by hour")
+```
+
+```{r, echo=FALSE}
+gas_price_month %>%
+  ggplot(aes(x=month, y=gas_price_cumulative)) + geom_point() + geom_smooth() +
+  labs(title="Gas price divided by month")
+```
+
+
+
+
+#### Interested in this kind of data? Try doing this to display further insights
+
+Try to query the number of transaction per month and display them on a graph using the insights you've acquired so far. Try to pinpoint the exact values for min and max for each dataset (use min() and max() function). You can also display them as labels in the graphs.
+
+## Conclusion
+
+It's easy to spot that during 2020 the lowest gas price was registered in May. If you digged deeper and you discovered the number of transactions per month, now you'll see that May it's at the bottom line. In 2020 the right time to open a position was during 15-16 PM (UTC Timezone) as the market was less busy and so there are far less transaction so gas price is down consequently. The worst moment to open a position was during February between 22-23 PM (UTC Timezone) as February was the leading month for the number of transactions and this was the busiest time for the market.
+
+This open some insights and questions. Why market is busiest in February and so quite in May? Is this a one-year trend or it's a recurrent thing? Can we predict market trends if we have some insights on its behaviour?
+
+## Why it's interesting to investigate this topic?
+
+Inflaction it's behind the corner. With rich countries injecting money in their economy at a continuous pace and reaching the end of the pandemic we expect a spike in price differential, so currency is going to lose a lot of its current purchase value. Use a simple macroeconomic model such as BB-MM-ESBP and you'll se what happens to the BB/MM curve when inflaction rise up. Don't want to bore you with this topic (if you feel to talk about them send me a message, I'm always interested in talking about macroeconomic stuff!).
+Cryptocurrency it's a store of value and it's good for diverging a portfolio especially in this kind of times, Ethereum it's the second most notable of the group behind BitCoin.
