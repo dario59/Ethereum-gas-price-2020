@@ -1,0 +1,32 @@
+---
+title: "Devils_is_in_details"
+author: "Dario Saturni"
+date: "01/5/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## What's more interesting than a bunch of random curiosity about gas price?
+
+Exploring the dataset about Ethereum in bigquery we can find some interesting facts about the cryptocurrency behaviour during last year.
+
+Open bigquery and try to execute this:
+
+```{mysql eval=FALSE}
+SELECT
+EXTRACT(MONTH FROM block_timestamp) as max_price_month,
+EXTRACT(HOUR FROM block_timestamp) as max_price_hour
+FROM `bigquery-public-data.crypto_ethereum.transactions`
+WHERE gas_price = (
+  SELECT
+  MAX(gas_price) AS max_price,
+  FROM `bigquery-public-data.crypto_ethereum.transactions`
+  WHERE EXTRACT(YEAR FROM block_timestamp) = 2020
+)
+```
+
+It's a query that gives us the max value who were transferred and in which hour it was done. Given the facts we already investigate in Ethereum_gas_price_2020 (you can find it in this repository)
+one would expect to find this kind of value in July or August and between 22-24 pm (UTC), instead 
