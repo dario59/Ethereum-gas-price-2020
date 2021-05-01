@@ -9,7 +9,7 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## What's more interesting than a bunch of random curiosity about gas price?
+## What's more interesting than a bunch of random curiosity about gas price or Ethereum in general?
 
 Exploring the dataset about Ethereum in bigquery we can find some interesting facts about the cryptocurrency behaviour during last year.
 
@@ -29,4 +29,32 @@ WHERE gas_price = (
 ```
 
 It's a query that gives us the max value who were transferred and in which hour it was done. Given the facts we already investigate in Ethereum_gas_price_2020 (you can find it in this repository)
-one would expect to find this kind of value in July or August and between 22-24 pm (UTC), instead 
+one would expect to find this kind of value in July or August and between 22-24 pm (UTC), instead we discover that the transaction was registered during 3 AM (UTC) in June. 
+June is near the bottom per transactions registered as you can see if you execute the code below:
+
+```{mysql eval=FALSE}
+SELECT
+SUM(EXTRACT(MONTH FROM block_timestamp)) as june_number_transaction,
+FROM `bigquery-public-data.crypto_ethereum.transactions`
+WHERE receipt_status = 1 AND EXTRACT(MONTH FROM block_timestamp) = 6
+```
+
+It gives you the exact number of validated transactions during June. Reminder, from a sheer point of view from what we've already seen in Ethereum_gas_price_2020 June had over 85 million of transaction but only half of them were valid.
+
+Let's ask a question to ourselves: how much the max gas price influenced the value of the highest transaction?
+
+```{mysql eval=FALSE}
+SELECT
+MAX(gas_price) AS max_gas_price,
+MAX(value) AS max_value,
+MAX(gas_price)/MAX(value)*100 AS max_gas_price_on_value,
+AVG(gas_price) AS avg_gas_price,
+AVG(value) AS avg_value,
+AVG(gas_price)/AVG(value)*100 AS avg_gas_price_on_value,
+STDDEV(gas_price) AS stdev_gas_price,
+STDDEV(value) AS stdev_value,
+CORR(gas_price, value) AS cv_gas_price_over_value,
+FROM `bigquery-public-data.crypto_ethereum.transactions`
+WHERE receipt_status = 1 AND EXTRACT(YEAR FROM block_timestamp) = 2020
+```
+
