@@ -28,8 +28,8 @@ WHERE gas_price = (
 )
 ```
 
-It's a query that gives us the max value who were transferred and in which hour it was done. Given the facts we already investigate in Ethereum_gas_price_2020 (you can find it in this repository)
-one would expect to find this kind of value in July or August and between 22-24 pm (UTC), instead we discover that the transaction was registered during 3 AM (UTC) in June. 
+It's a query that gives us the max value that was transferred and in which hour it was done. Given the facts we already investigate in Ethereum_gas_price_2020 (you can find it in this repository)
+one would expect to find this kind of value to be in July or August and between 22-24 PM (UTC), instead we discover that the transaction was registered during 3 AM (UTC) in June. 
 June is near the bottom per transactions registered as you can see if you execute the code below:
 
 ```{mysql eval=FALSE}
@@ -41,7 +41,7 @@ WHERE receipt_status = 1 AND EXTRACT(MONTH FROM block_timestamp) = 6
 
 It gives you the exact number of validated transactions during June. Reminder, from a sheer point of view from what we've already seen in Ethereum_gas_price_2020 June had over 85 million of transaction but only half of them were valid.
 
-Let's ask a question to ourselves: how much the max gas price influenced the value of the highest transaction?
+Let's ask a question to ourselves: how much the max gas price influenced the value of the highest transaction? Is there a link between the gas price and the value of the transactions? Is it strong? How much influence does gas price has over the value of the transaction on average?
 
 ```{mysql eval=FALSE}
 SELECT
