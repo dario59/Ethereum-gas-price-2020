@@ -36,12 +36,12 @@ receipt_cumulative_gas_used,
 receipt_gas_used,
 receipt_status,
 FROM `bigquery-public-data.crypto_ethereum.transactions`
-WHERE EXTRACT(YEAR FROM block_timestamp) = 2020)
+WHERE EXTRACT(YEAR FROM block_timestamp) = 2020 AND receipt_status = 1)
 ```
 
 With a few more lines I've queried data about the transaction and the gas price. I ended up with a bunch of .csv in which there are data about the number of transaction per month, the cumulative gas price ordered for various variable such as month, week etc. and the busiest time to operate in the market. I'll let you do the work as I won't give you the query I've used to create these .csv but rest assured, it's very simple.
 
-```{r cars}
+```{r}
 gas_price_hour <- read.csv("gas_price_hour_2020.csv")
 gas_price_month <- read.csv("gas_price_per_month_2020.csv")
 number_of_transaction <- read.csv("number_of_transaction_per_month_2020.csv")
