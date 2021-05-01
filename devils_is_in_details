@@ -47,15 +47,16 @@ Let's ask a question to ourselves: how much the max gas price influenced the val
 SELECT
 MAX(gas_price) AS max_gas_price,
 MAX(value) AS max_value,
-MAX(gas_price)/MAX(value)*100 AS max_gas_price_on_value,
-AVG(gas_price) AS avg_gas_price,
-AVG(value) AS avg_value,
-AVG(gas_price)/AVG(value)*100 AS avg_gas_price_on_value,
-STDDEV(gas_price) AS stdev_gas_price,
-STDDEV(value) AS stdev_value,
-CORR(gas_price, value) AS cv_gas_price_over_value,
+CAST(MAX(gas_price)/MAX(value)*100) AS FLOAT64) AS max_gas_price_on_value,
+CAST(AVG(gas_price) AS FLOAT64) AS avg_gas_price,
+CAST(AVG(value) AS FLOAT64) AS avg_value,
+CAST(AVG(gas_price)/AVG(value)*100 AS FLOAT64) AS avg_gas_price_on_value,
+CAST(STDDEV(gas_price) AS FLOAT64) AS stdev_gas_price,
+CAST(STDDEV(value) AS FLOAT64) AS stdev_value,
+CAST(CORR(gas_price, value) AS FLOAT64) AS cv_gas_price_over_value,
 FROM `bigquery-public-data.crypto_ethereum.transactions`
 WHERE receipt_status = 1 AND EXTRACT(YEAR FROM block_timestamp) = 2020
 ```
 This query pretty much tells us a story. There's a weak link between gas price and value of the transaction. Working with Wei make it difficult to visualize it because we talk about big numbers on screen.
-Also gas price on average is responsible for a tiny fraction of the value of the exchange.
+Also gas price on average is responsible for a tiny fraction of the value of the exchange. Let's try to calculate the link (if there's any) between the number of transactions and the gas's price.
+
