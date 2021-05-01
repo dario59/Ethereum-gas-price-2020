@@ -57,4 +57,5 @@ CORR(gas_price, value) AS cv_gas_price_over_value,
 FROM `bigquery-public-data.crypto_ethereum.transactions`
 WHERE receipt_status = 1 AND EXTRACT(YEAR FROM block_timestamp) = 2020
 ```
-
+This query pretty much tells us a story. There's a weak link between gas price and value of the transaction. Working with Wei make it difficult to visualize it because we talk about big numbers on screen.
+Also gas price on average is responsible for a tiny fraction of the value of the exchange.
