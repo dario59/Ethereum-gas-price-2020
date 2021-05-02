@@ -76,3 +76,5 @@ FROM `bigquery-public-data.crypto_ethereum.transactions` AS i
 CROSS JOIN `bigquery-public-data.crypto_ethereum.traces` AS j
 WHERE i.value <> j.value AND EXTRACT(YEAR FROM i.block_timestamp) = 2020 AND EXTRACT(YEAR FROM j.block_timestamp) = 2020
 ```
+
+As t tells us, there's a weak positive correlation between gas_price and value transferred. Let's investigate what happens when we put gas_price and the number of transactions executed under our magnifying glass.
