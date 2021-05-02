@@ -34,12 +34,12 @@ June is near the bottom per transactions registered as you can see if you execut
 
 ```{mysql eval=FALSE}
 SELECT
-SUM(EXTRACT(MONTH FROM block_timestamp)) as june_number_transaction,
+COUNT(EXTRACT(MONTH FROM block_timestamp)) as june_number_transaction,
 FROM `bigquery-public-data.crypto_ethereum.transactions`
 WHERE receipt_status = 1 AND EXTRACT(MONTH FROM block_timestamp) = 6
 ```
 
-It gives you the exact number of validated transactions during June. Reminder, from a sheer point of view from what we've already seen in Ethereum_gas_price_2020 June had over 85 million of transaction but only half of them were valid.
+It gives you the exact number of validated transactions during June. Reminder, from a sheer point of view from what we've already seen in Ethereum_gas_price_2020 June had over 85 million of transaction but only a fraction of them were executed with a valid receipt.
 
 Let's ask a question to ourselves: how much the max gas price influenced the value of the highest transaction? Is there a link between the gas price and the value of the transactions? Is it strong? How much influence does gas price has over the value of the transaction on average?
 
