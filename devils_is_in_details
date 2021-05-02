@@ -59,5 +59,5 @@ WHERE receipt_status = 1 AND EXTRACT(YEAR FROM block_timestamp) = 2020
 ```
 This query pretty much tells us a story. There's a weak link between gas price and value of the transaction, but if we display them on a graph we'll notice that it's impossible to calculate anything with Pearsonn's corr. as they're not distributed as parametric values. 
 Working with Wei make it difficult to visualize it because we talk about big numbers on screen. We could investigate further using rs. 
-Also gas price on average is responsible for a tiny fraction of the value of the exchange. Let's try to calculate the link (if there's any) between the number of transactions and the gas's price.
+Also gas price on average is responsible for a tiny fraction of the exchange's value. Let's try to calculate the link (if there's any) between the number of transactions and the gas's price.
 
