@@ -61,6 +61,14 @@ FROM `bigquery-public-data.crypto_ethereum.transactions`
 WHERE receipt_status = 1 AND EXTRACT(YEAR FROM block_timestamp) = 2020
 ```
 This query pretty much tells us a story. There's a weak link between gas price and value of the transaction, but if we display them on a graph we'll notice that it's impossible to calculate anything with Pearsonn's corr. as they're not distributed as parametric values. 
-Working with Wei make it difficult to visualize it because we talk about big numbers on screen. We could investigate further using rs. 
-Also gas price on average is responsible for a tiny fraction of the exchange's value. Let's try to calculate the link (if there's any) between the number of transactions and the gas's price.
+Working with Wei make it difficult to visualize it because we talk about big numbers on screen. Also gas price on average is responsible for a tiny fraction of the exchange's value. 
+We could investigate further using t. Let's try it. 
 
+```{mysql eval=FALSE}
+SELECT
+(SUM(CASE WHEN (i.gas_price < j.gas AND i.value < j.value) OR (i.gas_price > j.gas AND i.value > j.value) THEN 1 ELSE 0 END)), #valori concordi
+(SUM(CASE WHEN (i.gas_price < j.gas AND i.value > j.value) OR (i.gas_price > j.gas AND i.value < j.value) THEN 1 ELSE 0 END)) ##valori discordi
+FROM `bigquery-public-data.crypto_ethereum.transactions` AS i
+CROSS JOIN `bigquery-public-data.crypto_ethereum.traces` AS j
+WHERE i.value <> j.value AND EXTRACT(YEAR FROM i.block_timestamp) = 2020 AND EXTRACT(YEAR FROM j.block_timestamp) = 2020
+```
