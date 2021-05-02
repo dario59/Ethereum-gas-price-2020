@@ -11,7 +11,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## What's more interesting than a bunch of random curiosity about gas price or Ethereum in general?
 
-Exploring the dataset about Ethereum in bigquery we can find some interesting facts about the cryptocurrency behaviour during last year.
+Exploring the dataset about Ethereum in bigquery we can find some interesting facts about this cryptocurrency behaviour during last year.
 
 Open bigquery and try to execute this:
 
