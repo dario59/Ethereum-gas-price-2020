@@ -46,7 +46,7 @@ Let's ask a question to ourselves: how much the max gas price influenced the val
 ```{mysql eval=FALSE}
 
 -- CAST(x AS FLOAT64) helps mitigate overflow errors caused by being a free user on bigquery, there's no other reason to it in this instance. 
--- In bigquery using CORR statement basically gives us r. If you want to check for yourself try typing CAST((AVG(gas_price * value) - AVG(gas_price) * AVG(value)) / (STDDEV(gas_price) * STDDEV(value)) AS FLOAT64) AS r_coefficient in the query below, as it's the formula for calculating r manually
+-- In bigquery using CORR statement basically gives us r. If you want to check for yourself try typing CAST((AVG(gas_price * value) - AVG(gas_price) * AVG(value)) / (STDDEV(gas_price) * STDDEV(value)) AS FLOAT64) AS r_coefficient in the query below, as it is the formula for calculating r manually
 
 SELECT
 MAX(gas_price) AS max_gas_price,
@@ -64,7 +64,7 @@ FROM `bigquery-public-data.crypto_ethereum.transactions`
 WHERE receipt_status = 1 AND EXTRACT(YEAR FROM block_timestamp) = 2020
 ```
 This query pretty much tells us a story. 
-There's a weak link between gas price and value of the transaction, but if we display them on a graph we'll notice that it's impossible to calculate anything with r as they're not distributed as parametric values.
+There's a weak link between gas price and value of the transaction, but if we display them on a graph we'll notice that is impossible to calculate anything with r as they're not distributed as parametric values.
 Working with Wei make it difficult to visualize it because we talk about big numbers on screen. Also gas price on average is responsible for a tiny fraction of the exchange's value. 
 We could investigate further using t. Let's try it. 
 
