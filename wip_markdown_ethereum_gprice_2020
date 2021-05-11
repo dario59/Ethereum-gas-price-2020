@@ -68,7 +68,7 @@ gas_price_month %>%
 
 #### Interested in this kind of data? Try doing this to display further insights
 
-Try to query the number of transaction per month and display them on a graph using the insights you've acquired so far. Try to pinpoint the exact values for min and max for each dataset (use min() and max() function). You can also display them as labels in the graphs.
+Be my guest and try to query the number of transaction per month and display them on a graph using the insights you've acquired so far. Try to pinpoint the exact values for min and max for each dataset (use min() and max() function). You can also display them as labels in the graphs. If you're a newbie in R like me this kind of tasks will help you develop a good grip.
 
 ## Conclusion
 
